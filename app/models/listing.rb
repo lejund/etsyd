@@ -10,8 +10,9 @@ class Listing < ActiveRecord::Base
 	validates_attachment_file_name :image, :matches => [/png\Z/, /jpe?g\Z/, /gif\Z/]
 	end
 
-	validates :name, :description, :price, presence: true
+	validates :name, :desciption, :price, presence: true
 	validates :price, numericality: { greater_than: 0}
+	validates_attachment_presence :image
 
 
 
