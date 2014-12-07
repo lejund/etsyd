@@ -3,13 +3,12 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!
   respond_to :html
 
-  def index
-    @orders = Order.all
-    respond_with(@order)
+  def sales
+    @orders = Order.all.where(seller: current_user).order("created_at DESC")
   end
 
-  def show
-    respond_with(@order)
+  def purchases
+    @orders = Order.all.where(buyer: current_user).order("created_at DESC")
   end
 
   def new
@@ -17,9 +16,6 @@ class OrdersController < ApplicationController
     @listing = Listing.find(params[:listing_id])
 
     respond_with(@order)
-  end
-
-  def edit
   end
 
   def create
@@ -41,16 +37,6 @@ class OrdersController < ApplicationController
         format.json { render json: @order.errors, status: :unprocessable_entry }
       end
     end
-  end
-
-  def update
-    @order.update(order_params)
-    respond_with(@order)
-  end
-
-  def destroy
-    @order.destroy
-    respond_with(@order)
   end
 
   private
